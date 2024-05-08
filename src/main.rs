@@ -7,6 +7,8 @@
 // Entity exists -> Entity is connected to a Component (for it's health etc.) <- System will operate on the component
 //                                                                      (which will, by extension, operate on the entity)
 use bevy::prelude::*;
+// use bevy_iced::iced::widget::text::Text;
+// use bevy_iced::{IcedContext, IcedPlugin};
 
 // Global Game Constants
 mod game_constants;
@@ -38,8 +40,6 @@ pub struct Collider;
 #[derive(Event, Default)]
 pub struct CollisionEvent;
 
-// bricks
-
 //
 fn main() {
     App::new()
@@ -48,6 +48,7 @@ fn main() {
         .insert_resource(background_color())
         .add_systems(Update, bevy::window::close_on_esc)
         .add_event::<CollisionEvent>()
+        .add_event::<WinningMessage>()
         .add_systems(Startup, setup) // Startup will only run ONCE at the start of the game, not every frame
         .add_systems(
             FixedUpdate,
@@ -102,7 +103,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
             ..default()
         },
         Ball,
-        Velocity(BALL_INITIAL_DIRECTION.normalize() * BALL_SPEED),
+        Velocity(randomize_ball_direction().normalize() * BALL_SPEED),
     ));
 
     ScoreboardUi::setup_scoreboard(&mut commands);
