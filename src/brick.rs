@@ -3,7 +3,6 @@ use bevy::prelude::*;
 
 #[derive(Component)]
 pub struct Brick;
-
 impl Brick {
     pub fn spawn_bricks(commands: &mut Commands) {
         let total_width_bricks = (RIGHT_WALL - LEFT_WALL) - 2. * GAP_BETWEEN_BRICKS_AND_SIDEWALLS;
@@ -50,4 +49,11 @@ impl Brick {
             }
         }
     }
+}
+
+#[derive(Resource, Deref, DerefMut)]
+pub struct BrickCounter(pub usize);
+
+pub fn brick_counter_system(mut brick_counter: ResMut<BrickCounter>, query: Query<&Brick>) {
+    brick_counter.0 = query.iter().count();
 }

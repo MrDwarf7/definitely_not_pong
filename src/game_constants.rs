@@ -1,12 +1,12 @@
 use bevy::prelude::*; // One import to call into the sub-mods
 
 pub use self::{
-    ball::*, // Re-export the ball module
-    bricks::*,
-    game::*,   // Re-export the game module
-    player::*, // Re-export the ball module
-    scoreboard::*,
-    walls::*, // Re-export the walls module
+    ball::*,       // Re-export the ball module
+    bricks::*,     // Re-export the bricks module
+    game::*,       // Re-export the game module
+    player::*,     // Re-export the ball module
+    scoreboard::*, // Re-export the scoreboard module
+    walls::*,      // Re-export the walls module
 };
 
 pub mod game {
@@ -16,7 +16,6 @@ pub mod game {
     pub const WINDOW_HEIGHT: f32 = 720.0;
     pub const WINDOW_WIDTH: f32 = 1280.0;
     pub const TEXT_COLOR: Color = Color::WHITE;
-    pub const WINNING_SCORE: usize = TOTAL_BRICKS as usize;
 
     pub fn background_color() -> ClearColor {
         ClearColor(Color::rgb(0.59, 0.59, 0.59))
@@ -74,15 +73,11 @@ pub mod walls {
 }
 
 pub mod ball {
-    // Use the super::* to call into the parent module (has the bevy::prelude::* import)
     use super::*;
 
     pub const BALL_STARTING_POS: Vec3 = Vec3::new(PADDLE_START_Y + 20.0, -140.0, 1.0);
-    // pub const BALL_STARTING_POS: Vec3 = Vec3::new(0.0, -50.0, 1.0);
     pub const BALL_DIAMATER: f32 = 40.0;
     pub const BALL_SPEED: f32 = 550.0;
-    pub const BALL_INITIAL_DIRECTION: Vec2 = Vec2::new(-1.1, -0.5);
-
     pub const BALL_COLOR: Color = Color::Rgba {
         red: 0.96,
         green: 0.06,
@@ -102,8 +97,6 @@ pub mod bricks {
     pub const GAP_BETWEEN_BRICKS_AND_SIDEWALLS: f32 = 15.0;
 
     pub const BRICK_COLOR: Color = Color::rgb(0.8, 0.8, 0.8);
-    pub const TOTAL_BRICKS: f32 =
-        (RIGHT_WALL - LEFT_WALL) * (TOP_WALL - BOTTOM_WALL) / (BRICK_SIZE.x * BRICK_SIZE.y);
 }
 
 pub mod scoreboard {

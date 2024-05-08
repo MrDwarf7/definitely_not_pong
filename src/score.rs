@@ -1,4 +1,4 @@
-use crate::game_constants::*;
+use crate::{game_constants::*, BrickCounter};
 use bevy::prelude::*;
 // use bevy_iced::IcedContext;
 
@@ -41,9 +41,9 @@ impl ScoreboardUi {
         text.sections[1].value = score.to_string();
     }
 
-    pub fn winning_condition(score: Res<Score>) {
-        if **score == WINNING_SCORE {
-            println!("You win!")
+    pub fn winning_condition(brick_counter: Res<BrickCounter>) {
+        if brick_counter.0 == 0 {
+            println!("You win!");
         }
     }
 }

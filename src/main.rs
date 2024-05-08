@@ -46,6 +46,7 @@ fn main() {
         .add_plugins(DefaultPlugins.set(window_constructor()))
         .insert_resource(Score(0))
         .insert_resource(background_color())
+        .insert_resource(BrickCounter(0))
         .add_systems(Update, bevy::window::close_on_esc)
         .add_event::<CollisionEvent>()
         .add_systems(Startup, setup) // Startup will only run ONCE at the start of the game, not every frame
@@ -59,6 +60,7 @@ fn main() {
         )
         .add_systems(Update, ScoreboardUi::update_scoreboard)
         .add_systems(Update, ScoreboardUi::winning_condition)
+        .add_systems(Update, brick_counter_system)
         .run();
 }
 
