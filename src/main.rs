@@ -16,6 +16,9 @@ use game_constants::*;
 mod player;
 use player::{move_paddle, LeftKeys, PlayerKeys, PlayerPaddle, RightKeys};
 
+mod score;
+use score::*;
+
 mod ball;
 use ball::*;
 
@@ -38,6 +41,7 @@ pub struct CollisionEvent;
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins.set(window_constructor()))
+        .insert_resource(Score(0))
         .insert_resource(background_color())
         .add_systems(Update, bevy::window::close_on_esc)
         .add_event::<CollisionEvent>()
@@ -50,6 +54,7 @@ fn main() {
                 check_ball_collisions.after(apply_velocity),
             ),
         )
+        .add_systems(Update, ScoreboardUi::update_scoreboard)
         .run();
 }
 
@@ -96,6 +101,8 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         Ball,
         Velocity(BALL_INITIAL_DIRECTION.normalize() * BALL_SPEED),
     ));
+
+    ScoreboardUi::setup_scoreboard(&mut commands);
 
     commands.spawn(WallBundle::new(WallLocation::Left));
     commands.spawn(WallBundle::new(WallLocation::Right));
