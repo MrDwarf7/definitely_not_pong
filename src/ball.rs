@@ -1,8 +1,9 @@
-use crate::{Collider, CollisionEvent, Velocity, BALL_DIAMATER};
+use crate::{Brick, Collider, CollisionEvent, Score, Velocity, BALL_DIAMATER};
 use bevy::{
     math::bounding::{Aabb2d, BoundingCircle, BoundingVolume, IntersectsVolume},
     prelude::*,
 };
+use rand::{random, Rng};
 
 #[derive(Debug, PartialEq, Eq, Copy, Clone)]
 pub enum Collision {
@@ -17,14 +18,15 @@ pub struct Ball;
 
 pub fn check_ball_collisions(
     mut commands: Commands,
-    mut ball_query: Query<(&mut Velocity, &Transform, &Ball)>,
-    collider_query: Query<(Entity, &Transform), With<Collider>>,
+    mut score: ResMut<Score>,
+    mut ball_query: Query<(&mut Velocity, &Transform), With<Ball>>,
+    collider_query: Query<(Entity, &Transform, Option<&Brick>), With<Collider>>,
     mut collision_events: EventWriter<CollisionEvent>,
 ) {
     //
-    let (mut ball_velocity, ball_transform, ball) = ball_query.single_mut();
+    let (mut ball_velocity, ball_transform) = ball_query.single_mut();
 
-    for (collider_entity, collider_transform) in &collider_query {
+    for (collider_entity, collider_transform, maybe_brick) in &collider_query {
         let collision = ball_collision(
             BoundingCircle::new(ball_transform.translation.truncate(), BALL_DIAMATER / 2.),
             Aabb2d::new(
@@ -37,6 +39,10 @@ pub fn check_ball_collisions(
             collision_events.send_default();
 
             // add brick handling here
+            if maybe_brick.is_some() {
+                commands.entity(collider_entity).despawn();
+                **score += 1;
+            }
 
             let mut reflect_x = false;
             let mut reflect_y = false;
@@ -79,4 +85,12 @@ pub fn ball_collision(ball: BoundingCircle, bounding_box: Aabb2d) -> Option<Coll
     };
 
     Some(side)
+}
+
+pub fn randomize_ball_direction() -> Vec2 {
+    let mut rng = rand::thread_rng();
+    let x = rng.gen_range(-1.0..1.0);
+    let y = rng.gen_range(-1.0..1.0);
+
+    Vec2::new(x, y)
 }
