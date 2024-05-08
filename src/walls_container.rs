@@ -28,6 +28,8 @@ impl WallLocation {
         let arena_height = TOP_WALL - BOTTOM_WALL;
         let arena_width = RIGHT_WALL - LEFT_WALL;
 
+        assert!(arena_height > 0.0 && arena_width > 0.0);
+
         match self {
             WallLocation::Left | WallLocation::Right => {
                 Vec2::new(WALL_THICCCNESS, arena_height + WALL_THICCCNESS)
