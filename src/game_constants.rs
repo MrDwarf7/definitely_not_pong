@@ -16,7 +16,7 @@ pub mod game {
     pub const WINDOW_HEIGHT: f32 = 720.0;
     pub const WINDOW_WIDTH: f32 = 1280.0;
     pub const TEXT_COLOR: Color = Color::WHITE;
-    pub const WINNING_SCORE: usize = 1000;
+    pub const WINNING_SCORE: usize = TOTAL_BRICKS as usize;
 
     pub fn background_color() -> ClearColor {
         ClearColor(Color::rgb(0.59, 0.59, 0.59))
@@ -102,6 +102,8 @@ pub mod bricks {
     pub const GAP_BETWEEN_BRICKS_AND_SIDEWALLS: f32 = 15.0;
 
     pub const BRICK_COLOR: Color = Color::rgb(0.8, 0.8, 0.8);
+    pub const TOTAL_BRICKS: f32 =
+        (RIGHT_WALL - LEFT_WALL) * (TOP_WALL - BOTTOM_WALL) / (BRICK_SIZE.x * BRICK_SIZE.y);
 }
 
 pub mod scoreboard {

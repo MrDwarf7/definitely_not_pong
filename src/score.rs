@@ -40,13 +40,10 @@ impl ScoreboardUi {
         let mut text = query.single_mut();
         text.sections[1].value = score.to_string();
     }
-}
 
-#[derive(Event)]
-pub enum WinningMessage {}
-
-pub fn winning_condition(score: Res<Score>) {
-    if **score == WINNING_SCORE {
-        println!("You win!")
+    pub fn winning_condition(score: Res<Score>) {
+        if **score == WINNING_SCORE {
+            println!("You win!")
+        }
     }
 }

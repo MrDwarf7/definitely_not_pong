@@ -48,7 +48,6 @@ fn main() {
         .insert_resource(background_color())
         .add_systems(Update, bevy::window::close_on_esc)
         .add_event::<CollisionEvent>()
-        .add_event::<WinningMessage>()
         .add_systems(Startup, setup) // Startup will only run ONCE at the start of the game, not every frame
         .add_systems(
             FixedUpdate,
@@ -59,6 +58,7 @@ fn main() {
             ),
         )
         .add_systems(Update, ScoreboardUi::update_scoreboard)
+        .add_systems(Update, ScoreboardUi::winning_condition)
         .run();
 }
 
