@@ -22,6 +22,9 @@ use score::*;
 mod ball;
 use ball::*;
 
+mod brick;
+use brick::*;
+
 // Bounds & Collisions
 mod walls_container;
 use walls_container::{WallBundle, WallLocation};
@@ -108,6 +111,8 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(WallBundle::new(WallLocation::Right));
     commands.spawn(WallBundle::new(WallLocation::Bottom));
     commands.spawn(WallBundle::new(WallLocation::Top));
+
+    Brick::spawn_bricks(&mut commands);
 }
 
 pub fn apply_velocity(mut query: Query<(&mut Transform, &Velocity)>, time_step: Res<Time>) {
